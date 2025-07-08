@@ -55,8 +55,9 @@ kmpnotifier-library = { id = "com.mmk.kmpnotifier.library" }
 [bundles]
 androidMain = [
     "androidx-core-ktx",
+    "firebase-messaging",
     "androidx-activity-ktx",
-    "androidx-startup-runtime"
+    "androidx-startup-runtime",
 ]
 
 commonMain = [

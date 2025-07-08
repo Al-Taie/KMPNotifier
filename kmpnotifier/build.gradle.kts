@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinNativeCocoaPods)
     alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.google.services)
     alias(libs.plugins.dokka)
 }
 
