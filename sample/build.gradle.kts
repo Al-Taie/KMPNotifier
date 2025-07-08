@@ -10,7 +10,6 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.kmpnotifier)
 }
 
 kotlin {
