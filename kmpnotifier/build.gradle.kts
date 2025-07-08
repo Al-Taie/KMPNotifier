@@ -11,7 +11,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinNativeCocoaPods)
     alias(libs.plugins.mavenPublish)
-    alias(libs.plugins.kmpnotifier.library)
     alias(libs.plugins.dokka)
 }
 
