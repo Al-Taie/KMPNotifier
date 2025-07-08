@@ -6,6 +6,10 @@ public abstract interface class com/mmk/kmpnotifier/logger/Logger {
 	public abstract fun log (Ljava/lang/String;)V
 }
 
+public final class com/mmk/kmpnotifier/logger/LoggerKt {
+	public static final fun log (Lcom/mmk/kmpnotifier/logger/Logger;Ljava/lang/Throwable;)V
+}
+
 public abstract class com/mmk/kmpnotifier/notification/NotificationImage {
 }
 
@@ -92,7 +96,10 @@ public final class com/mmk/kmpnotifier/notification/NotifierManager$Listener$Def
 	public static fun onPushNotificationWithPayloadData (Lcom/mmk/kmpnotifier/notification/NotifierManager$Listener;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;)V
 }
 
-public abstract interface class com/mmk/kmpnotifier/notification/PushNotifier {
+public abstract class com/mmk/kmpnotifier/notification/PushNotifier {
+	public fun <init> ()V
+	protected final fun callSafe-gIAlu-s (Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public static synthetic fun callSafe-gIAlu-s$default (Lcom/mmk/kmpnotifier/notification/PushNotifier;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)Ljava/lang/Object;
 	public abstract fun deleteMyToken (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun getToken (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 	public abstract fun subscribeToTopic (Ljava/lang/String;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
