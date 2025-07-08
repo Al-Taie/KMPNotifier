@@ -39,6 +39,7 @@ jobs:
 
   build:
     strategy:
+      fail-fast: false
       matrix:
         config: [
           { target: "Android Google", os: ubuntu-latest, tasks: "testGoogleDebugUnitTest testGoogleReleaseUnitTest", continueOnError: false },
