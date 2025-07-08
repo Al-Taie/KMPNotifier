@@ -15,5 +15,5 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(gradleKotlinDsl())
-    implementation(libs.gradle.api)
+    implementation(libs.gradle.android)
 }
