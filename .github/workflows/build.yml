@@ -41,8 +41,10 @@ jobs:
     strategy:
       matrix:
         config: [
-          { target: android, os: ubuntu-latest, tasks: testDebugUnitTest testReleaseUnitTest, continueOnError: false },
-          { target: apple, os: macos-latest, tasks: iosX64Test iosSimulatorArm64Test, continueOnError: false },
+          { target: "Android Google", os: ubuntu-latest, tasks: "testGoogleDebugUnitTest testGoogleReleaseUnitTest", continueOnError: false },
+          { target: "Android Huawei", os: ubuntu-latest, tasks: "testHuaweiDebugUnitTest testHuaweiReleaseUnitTest", continueOnError: false },
+          { target: "Apple iOS x64", os: macos-latest, tasks: "iosX64Test", continueOnError: false },
+          { target: "Apple iOS ARM64", os: macos-latest, tasks: "iosSimulatorArm64Test", continueOnError: false }
         ]
     runs-on: ${{ matrix.config.os }}
     name: Build ${{ matrix.config.target }}
