@@ -1,23 +1,27 @@
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
-import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import flavor.flavorImplementation
+import flavor.Flavor
+import maven.configure
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinNativeCocoaPods)
     alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.kmpnotifier.library)
+    alias(libs.plugins.dokka)
 }
 
 kotlin {
     explicitApi()
+
     androidTarget {
         publishAllLibraryVariants()
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_21
         }
     }
 
@@ -36,31 +40,23 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
 
-
     cocoapods {
         ios.deploymentTarget = "14.1"
         framework {
-            baseName = "KMPNotifier"
+            baseName = Config.LIBRARY_NAME
             isStatic = true
         }
         noPodspec()
         pod("FirebaseMessaging")
     }
 
-
-
     sourceSets {
-
         androidMain.dependencies {
-            implementation(libs.androidx.startup.runtime)
-            implementation(libs.androidx.core.ktx)
-            implementation(libs.androidx.activity.ktx)
-            implementation(libs.firebase.messaging)
-
+            implementation(libs.bundles.androidMain)
         }
+
         commonMain.dependencies {
-            implementation(libs.koin.core)
-            implementation(libs.kotlinx.coroutine)
+            implementation(libs.bundles.commonMain)
         }
         wasmJsMain.dependencies {
             implementation(libs.kotlinx.browser)
@@ -69,21 +65,15 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
         }
-
     }
 }
 
 android {
-    namespace = "com.mmk.kmpnotifier"
+    namespace = Config.PACKAGE_ID
     compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    sourceSets["main"].res.srcDirs("src/androidMain/res")
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
     }
 
     packaging {
@@ -92,8 +82,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    dependencies {
+        flavorImplementation(flavorName = Flavor.HUAWEI, dependency = libs.huawei.push)
+        flavorImplementation(flavorName = Flavor.GOOGLE, dependency = libs.firebase.messaging)
     }
 }
 
@@ -105,37 +100,21 @@ mavenPublishing {
         )
     )
     coordinates(
-        "io.github.mirzemehdi",
-        "kmpnotifier",
-        project.properties["kmpNotifierVersion"] as String
+        groupId = Config.ARTIFACT_GROUP_ID,
+        artifactId = Config.ARTIFACT_ID,
+        version = Config.ARTIFACT_VERSION
     )
     pom {
-        name = "KMPNotifier"
-        description = "Kotlin Multiplatform Push Notification Library targeting ios and android"
-        url = "https://github.com/mirzemehdi/KMPNotifier/"
-        licenses {
-            license {
-                name.set("Apache-2.0")
-                url.set("https://opensource.org/licenses/Apache-2.0")
-            }
-        }
-        developers {
-            developer {
-                name.set("Mirzamehdi Karimov")
-                email.set("mirzemehdi@gmail.com")
-            }
-        }
-        scm {
-            connection.set("https://github.com/mirzemehdi/KMPNotifier.git")
-            url.set("https://github.com/mirzemehdi/KMPNotifier")
-        }
-        issueManagement {
-            system.set("Github")
-            url.set("https://github.com/mirzemehdi/KMPNotifier/issues")
-        }
+        configure(
+            libraryName = Config.LIBRARY_NAME,
+            libraryDescription = Config.LIBRARY_DESCRIPTION,
+            developerName = Config.DEVELOPER_NAME,
+            developerEmail = Config.DEVELOPER_EMAIL,
+            githubUsername = Config.GITHUB_USERNAME,
+            githubRepositoryName = Config.GITHUB_REPOSITORY_NAME,
+        )
     }
 
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    publishToMavenCentral()
     signAllPublications()
 }
-
