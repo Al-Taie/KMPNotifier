@@ -36,6 +36,7 @@ jobs:
       - name: Check api
         run: ./gradlew apiCheck
 
+
   build:
     strategy:
       fail-fast: false
