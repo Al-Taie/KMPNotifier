@@ -1,4 +1,11 @@
 buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven("https://jitpack.io/")
+        maven(url = "https://developer.huawei.com/repo/")
+    }
     dependencies {
         classpath(libs.huawei.services)
     }
@@ -17,6 +24,7 @@ plugins {
     alias(libs.plugins.kotlinx.binary.validator)
     alias(libs.plugins.mavenPublish) apply false
     alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.kotlin.android) apply false
 }
 
 apiValidation {

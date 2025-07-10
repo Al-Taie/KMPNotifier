@@ -2,7 +2,7 @@ import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import flavor.flavorImplementation
+import flavor.flavorApi
 import flavor.Flavor
 import maven.configure
 
@@ -88,8 +88,8 @@ android {
     }
 
     dependencies {
-        flavorImplementation(flavorName = Flavor.HUAWEI, dependency = libs.huawei.push)
-        flavorImplementation(flavorName = Flavor.GOOGLE, dependency = libs.firebase.messaging)
+        flavorApi(flavorName = Flavor.HUAWEI, dependency = libs.huawei.push)
+        flavorApi(flavorName = Flavor.GOOGLE, dependency = libs.firebase.messaging)
     }
 }
 

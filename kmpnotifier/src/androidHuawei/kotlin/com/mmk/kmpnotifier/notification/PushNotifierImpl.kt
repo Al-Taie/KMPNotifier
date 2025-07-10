@@ -13,7 +13,7 @@ import com.huawei.hms.common.util.AGCUtils
 internal class PushNotifierImpl : PushNotifier() {
 
     init {
-        currentLogger.log("PushNotifier is initialized")
+        currentLogger.log("Huawei PushNotifier is initialized")
     }
 
     private val instanceId by lazy { HmsInstanceId.getInstance(applicationContext) }
@@ -23,23 +23,29 @@ internal class PushNotifierImpl : PushNotifier() {
     }
 
     override suspend fun getToken(): String? = callSafe(
+        onSuccess = { currentLogger.log("Token retrieved successfully -> $it") },
         onFailure = { currentLogger.log("Error while getting token: $it") },
         block = { instanceId.getToken(appId, HmsMessaging.DEFAULT_TOKEN_SCOPE) }
     ).getOrNull()
 
     override suspend fun deleteMyToken() = callSafe(
+        onSuccess = { currentLogger.log("Token deleted successfully") },
         onFailure = { currentLogger.log("Error while deleting token: $it") },
         block = { instanceId.deleteToken(appId, HmsMessaging.DEFAULT_TOKEN_SCOPE) }
     ).isSuccess
 
-    override suspend fun subscribeToTopic(topic: String) = messaging.subscribe(topic)
-        .await { currentLogger.log("Error while subscribing to topic($topic): $it") }
-        .isSuccess
+    override suspend fun subscribeToTopic(topic: String) = messaging.subscribe(topic).await(
+        onSuccess = { currentLogger.log("Subscribed to topic($topic) successfully") },
+        onFailure = { currentLogger.log("Error while subscribing to topic($topic): $it") }
+    ).isSuccess
 
-    override suspend fun unSubscribeFromTopic(topic: String) = messaging.unsubscribe(topic)
-        .await { currentLogger.log("Error while unsubscribing from topic($topic): $it") }
-        .isSuccess
+    override suspend fun unSubscribeFromTopic(topic: String) = messaging.unsubscribe(topic).await(
+        onSuccess = { currentLogger.log("Unsubscribed from topic($topic) successfully") },
+        onFailure = { currentLogger.log("Error while unsubscribing from topic($topic): $it") }
+    ).isSuccess
 
-    private fun <T> Task<T>.await(onFailure: (Throwable) -> Unit = currentLogger::log) =
-        callSafe(onFailure = onFailure) { Tasks.await<T>(this) }
+    private fun <T> Task<T>.await(
+        onSuccess: () -> Unit = {},
+        onFailure: (Throwable) -> Unit = currentLogger::log
+    ) = callSafe(onSuccess = onSuccess, onFailure = onFailure) { Tasks.await<T>(this) }
 }

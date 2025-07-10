@@ -20,6 +20,7 @@ internal class GoogleMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+        currentLogger.log("GoogleMessagingService: onMessageReceived is called with message: $message")
         handler.handle(
             title = message.notification?.title,
             body = message.notification?.body,

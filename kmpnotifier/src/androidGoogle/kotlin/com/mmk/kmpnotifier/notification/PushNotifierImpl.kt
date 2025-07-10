@@ -10,30 +10,36 @@ import com.mmk.kmpnotifier.logger.log
 internal class PushNotifierImpl : PushNotifier() {
 
     init {
-        currentLogger.log("PushNotifier is initialized")
+        currentLogger.log("Google PushNotifier is initialized")
     }
 
     private val messaging by lazy { FirebaseMessaging.getInstance() }
 
     override suspend fun getToken(): String? = messaging.token.await(
+        onSuccess = { currentLogger.log("Token retrieved successfully -> $it") },
         onFailure = { currentLogger.log("Error while getting token: $it") }
     ).getOrNull()
 
     override suspend fun deleteMyToken(): Boolean = callSafe(
+        block = { messaging.deleteToken() },
+        onSuccess = { currentLogger.log("Token deleted successfully") },
         onFailure = { currentLogger.log("Error while deleting token: $it") },
-        block = { messaging.deleteToken() }
     ).isSuccess
 
     override suspend fun subscribeToTopic(topic: String): Boolean = callSafe(
+        block = { messaging.subscribeToTopic(topic) },
+        onSuccess = { currentLogger.log("Subscribed to topic($topic) successfully") },
         onFailure = { currentLogger.log("Error while subscribing to topic $topic: $it") },
-        block = { messaging.subscribeToTopic(topic) }
     ).isSuccess
 
     override suspend fun unSubscribeFromTopic(topic: String): Boolean = callSafe(
+        block = { messaging.unsubscribeFromTopic(topic) },
+        onSuccess = { currentLogger.log("Unsubscribed from topic($topic) successfully") },
         onFailure = { currentLogger.log("Error while unsubscribing from topic $topic: $it") },
-        block = { messaging.unsubscribeFromTopic(topic) }
     ).isSuccess
 
-    private fun <T> Task<T>.await(onFailure: (Throwable) -> Unit = currentLogger::log) =
-        callSafe(onFailure = onFailure) { Tasks.await<T>(this) }
+    private fun <T> Task<T>.await(
+        onSuccess: (T) -> T = {},
+        onFailure: (Throwable) -> Unit = currentLogger::log
+    ) = callSafe(onSuccess = onSuccess, onFailure = onFailure) { Tasks.await<T>(this) }
 }

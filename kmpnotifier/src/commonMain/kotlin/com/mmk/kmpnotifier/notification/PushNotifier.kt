@@ -33,9 +33,10 @@ public abstract class PushNotifier {
     public abstract suspend fun unSubscribeFromTopic(topic: String): Boolean
 
     protected fun <T> callSafe(
+        onSuccess: (T) -> T = {},
         onFailure: (Throwable) -> Unit = currentLogger::log,
         block: () -> T,
     ): Result<T> = runCatching {
-        block()
+        onSuccess(block())
     }.onFailure(onFailure)
 }

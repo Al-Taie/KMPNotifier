@@ -5,6 +5,7 @@ package flavor
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
+import com.android.build.api.dsl.ProductFlavor
 import flavor.Flavor.DIMENSION
 import flavor.Flavor.flavors
 import org.gradle.api.Project
@@ -12,9 +13,12 @@ import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.configure
 
 
-internal fun CommonExtension<*, *, *, *, *, *>.applyFlavorConfig() {
-    defaultConfig { missingDimensionStrategy(dimension = DIMENSION, requestedValues = flavors) }
+fun CommonExtension<*, *, *, *, *, *>.configureFlavor(block: ProductFlavor.() -> Unit) =
+    productFlavors {
+        flavors.forEach { flavorName -> named(flavorName) { block(this) } }
+    }
 
+internal fun CommonExtension<*, *, *, *, *, *>.applyFlavorConfig() {
     flavorDimensions.add(DIMENSION)
 
     productFlavors {
@@ -46,10 +50,10 @@ fun Project.configureApplication(configure: ApplicationExtension.() -> Unit) =
         extensions.configure<ApplicationExtension>(configure)
     }
 
-fun DependencyHandlerScope.flavorImplementation(
+fun DependencyHandlerScope.flavorApi(
     flavorName: String,
     dependency: Any
 ) = add(
-    configurationName = "${flavorName}Implementation",
+    configurationName = "${flavorName}Api",
     dependencyNotation = dependency
 )

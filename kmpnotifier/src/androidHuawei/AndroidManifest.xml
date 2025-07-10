@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application>
-        <provider
-            android:name="androidx.startup.InitializationProvider"
-            android:authorities="${applicationId}.androidx-startup"
-            android:exported="false"
-            tools:node="merge">
-            <!-- This entry makes ExampleLoggerInitializer discoverable. -->
-            <meta-data  android:name="com.mmk.kmpnotifier.di.ContextInitializer"
-                android:value="androidx.startup" />
-        </provider>
-
         <service
             android:name=".service.HuaweiPushService"
             android:exported="false">
@@ -20,5 +9,13 @@
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="appid=${huawei_agconnect_appid}">
+        </meta-data>
+        <meta-data
+            android:name="com.huawei.hms.client.cpid"
+            android:value="cpid=${huawei_agconnect_cpid}">
+        </meta-data>
     </application>
 </manifest>
