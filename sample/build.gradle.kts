@@ -80,6 +80,12 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+        manifestPlaceholders.putAll(
+            mapOf(
+                "huawei_agconnect_appid" to "",
+                "huawei_agconnect_cpid" to "",
+            )
+        )
     }
     buildFeatures {
         compose = true
