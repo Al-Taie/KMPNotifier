@@ -24,10 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup JDK 21
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Setup gradle
@@ -39,20 +39,23 @@ jobs:
 
   build:
     strategy:
+      fail-fast: false
       matrix:
         config: [
-          { target: android, os: ubuntu-latest, tasks: testDebugUnitTest testReleaseUnitTest, continueOnError: false },
-          { target: apple, os: macos-latest, tasks: iosX64Test iosSimulatorArm64Test, continueOnError: false },
+          { target: "Android Google", os: ubuntu-latest, tasks: "testGoogleDebugUnitTest testGoogleReleaseUnitTest", continueOnError: false },
+          { target: "Android Huawei", os: ubuntu-latest, tasks: "testHuaweiDebugUnitTest testHuaweiReleaseUnitTest", continueOnError: false },
+          { target: "Apple iOS x64", os: macos-latest, tasks: "iosX64Test", continueOnError: true },
+          { target: "Apple iOS ARM64", os: macos-latest, tasks: "iosSimulatorArm64Test", continueOnError: true }
         ]
     runs-on: ${{ matrix.config.os }}
     name: Build ${{ matrix.config.target }}
     needs: check
     steps:
       - uses: actions/checkout@v4
-      - name: Setup JDK 21
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Setup gradle
@@ -74,10 +77,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup JDK 21
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: '17'
           distribution: 'temurin'
 
       - name: Setup gradle

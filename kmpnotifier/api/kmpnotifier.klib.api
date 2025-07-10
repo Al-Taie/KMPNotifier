@@ -6,7 +6,7 @@
 // - Show manifest properties: true
 // - Show declarations: true
 
-// Library unique name: <KMPNotifierLib:kmpnotifier>
+// Library unique name: <io.github.mirzemehdi:kmpnotifier>
 abstract fun interface com.mmk.kmpnotifier.logger/Logger { // com.mmk.kmpnotifier.logger/Logger|null[0]
     abstract fun log(kotlin/String) // com.mmk.kmpnotifier.logger/Logger.log|log(kotlin.String){}[0]
 }
@@ -23,13 +23,6 @@ abstract interface com.mmk.kmpnotifier.notification/Notifier { // com.mmk.kmpnot
             final fun <get-KEY_URL>(): kotlin/String // com.mmk.kmpnotifier.notification/Notifier.Companion.KEY_URL.<get-KEY_URL>|<get-KEY_URL>(){}[0]
             final fun <set-KEY_URL>(kotlin/String) // com.mmk.kmpnotifier.notification/Notifier.Companion.KEY_URL.<set-KEY_URL>|<set-KEY_URL>(kotlin.String){}[0]
     }
-}
-
-abstract interface com.mmk.kmpnotifier.notification/PushNotifier { // com.mmk.kmpnotifier.notification/PushNotifier|null[0]
-    abstract suspend fun deleteMyToken() // com.mmk.kmpnotifier.notification/PushNotifier.deleteMyToken|deleteMyToken(){}[0]
-    abstract suspend fun getToken(): kotlin/String? // com.mmk.kmpnotifier.notification/PushNotifier.getToken|getToken(){}[0]
-    abstract suspend fun subscribeToTopic(kotlin/String) // com.mmk.kmpnotifier.notification/PushNotifier.subscribeToTopic|subscribeToTopic(kotlin.String){}[0]
-    abstract suspend fun unSubscribeFromTopic(kotlin/String) // com.mmk.kmpnotifier.notification/PushNotifier.unSubscribeFromTopic|unSubscribeFromTopic(kotlin.String){}[0]
 }
 
 abstract interface com.mmk.kmpnotifier.permission/PermissionUtil { // com.mmk.kmpnotifier.permission/PermissionUtil|null[0]
@@ -109,6 +102,16 @@ sealed interface com.mmk.kmpnotifier.notification.configuration/NotificationPlat
     }
 }
 
+abstract class com.mmk.kmpnotifier.notification/PushNotifier { // com.mmk.kmpnotifier.notification/PushNotifier|null[0]
+    constructor <init>() // com.mmk.kmpnotifier.notification/PushNotifier.<init>|<init>(){}[0]
+
+    abstract suspend fun deleteMyToken(): kotlin/Boolean // com.mmk.kmpnotifier.notification/PushNotifier.deleteMyToken|deleteMyToken(){}[0]
+    abstract suspend fun getToken(): kotlin/String? // com.mmk.kmpnotifier.notification/PushNotifier.getToken|getToken(){}[0]
+    abstract suspend fun subscribeToTopic(kotlin/String): kotlin/Boolean // com.mmk.kmpnotifier.notification/PushNotifier.subscribeToTopic|subscribeToTopic(kotlin.String){}[0]
+    abstract suspend fun unSubscribeFromTopic(kotlin/String): kotlin/Boolean // com.mmk.kmpnotifier.notification/PushNotifier.unSubscribeFromTopic|unSubscribeFromTopic(kotlin.String){}[0]
+    final fun <#A1: kotlin/Any?> callSafe(kotlin/Function1<#A1, kotlin/Unit> = ..., kotlin/Function1<kotlin/Throwable, kotlin/Unit> = ..., kotlin/Function0<#A1>): kotlin/Result<#A1> // com.mmk.kmpnotifier.notification/PushNotifier.callSafe|callSafe(kotlin.Function1<0:0,kotlin.Unit>;kotlin.Function1<kotlin.Throwable,kotlin.Unit>;kotlin.Function0<0:0>){0§<kotlin.Any?>}[0]
+}
+
 final class com.mmk.kmpnotifier.notification/NotifierBuilder { // com.mmk.kmpnotifier.notification/NotifierBuilder|null[0]
     constructor <init>() // com.mmk.kmpnotifier.notification/NotifierBuilder.<init>|<init>(){}[0]
 
@@ -176,6 +179,8 @@ final object com.mmk.kmpnotifier.notification/NotifierManager { // com.mmk.kmpno
         open fun onPushNotificationWithPayloadData(kotlin/String?, kotlin/String?, kotlin.collections/Map<kotlin/String, *>) // com.mmk.kmpnotifier.notification/NotifierManager.Listener.onPushNotificationWithPayloadData|onPushNotificationWithPayloadData(kotlin.String?;kotlin.String?;kotlin.collections.Map<kotlin.String,*>){}[0]
     }
 }
+
+final fun (com.mmk.kmpnotifier.logger/Logger).com.mmk.kmpnotifier.logger/log(kotlin/Throwable) // com.mmk.kmpnotifier.logger/log|log@com.mmk.kmpnotifier.logger.Logger(kotlin.Throwable){}[0]
 
 // Targets: [ios]
 final fun (com.mmk.kmpnotifier.notification/NotifierManager).com.mmk.kmpnotifier.extensions/onApplicationDidReceiveRemoteNotification(kotlin.collections/Map<kotlin/Any?, *>) // com.mmk.kmpnotifier.extensions/onApplicationDidReceiveRemoteNotification|onApplicationDidReceiveRemoteNotification@com.mmk.kmpnotifier.notification.NotifierManager(kotlin.collections.Map<kotlin.Any?,*>){}[0]

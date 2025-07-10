@@ -1,14 +1,17 @@
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import maven.configure
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import flavor.flavorApi
+import flavor.Flavor
+import maven.configure
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinNativeCocoaPods)
     alias(libs.plugins.mavenPublish)
+    alias(libs.plugins.kmpnotifier.library)
     alias(libs.plugins.google.services)
     alias(libs.plugins.dokka)
 }
@@ -19,7 +22,7 @@ kotlin {
     androidTarget {
         publishAllLibraryVariants()
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_21
+            jvmTarget = JvmTarget.JVM_17
         }
     }
 
@@ -80,8 +83,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    dependencies {
+        flavorApi(flavorName = Flavor.HUAWEI, dependency = libs.huawei.push)
+        flavorApi(flavorName = Flavor.GOOGLE, dependency = libs.firebase.messaging)
     }
 }
 
