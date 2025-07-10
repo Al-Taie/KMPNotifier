@@ -22,4 +22,4 @@ dependencyResolutionManagement {
     }
 }
 include(":kmpnotifier")
-include(":sample")
+//include(":sample")

@@ -32,12 +32,12 @@ apiValidation {
     klib {
         enabled = true
     }
-    ignoredProjects += "sample"
+    //ignoredProjects += "sample"
 }
 
 allprojects {
-    val excludedModules = listOf(":sample")
-    if (project.path in excludedModules) return@allprojects
+    //val excludedModules = listOf(":sample")
+    //if (project.path in excludedModules) return@allprojects
 
     apply(plugin = "maven-publish")
     apply(plugin = "signing")

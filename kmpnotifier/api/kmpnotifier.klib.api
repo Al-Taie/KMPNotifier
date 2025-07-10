@@ -109,7 +109,7 @@ abstract class com.mmk.kmpnotifier.notification/PushNotifier { // com.mmk.kmpnot
     abstract suspend fun getToken(): kotlin/String? // com.mmk.kmpnotifier.notification/PushNotifier.getToken|getToken(){}[0]
     abstract suspend fun subscribeToTopic(kotlin/String): kotlin/Boolean // com.mmk.kmpnotifier.notification/PushNotifier.subscribeToTopic|subscribeToTopic(kotlin.String){}[0]
     abstract suspend fun unSubscribeFromTopic(kotlin/String): kotlin/Boolean // com.mmk.kmpnotifier.notification/PushNotifier.unSubscribeFromTopic|unSubscribeFromTopic(kotlin.String){}[0]
-    final fun <#A1: kotlin/Any?> callSafe(kotlin/Function1<kotlin/Throwable, kotlin/Unit> = ..., kotlin/Function0<#A1>): kotlin/Result<#A1> // com.mmk.kmpnotifier.notification/PushNotifier.callSafe|callSafe(kotlin.Function1<kotlin.Throwable,kotlin.Unit>;kotlin.Function0<0:0>){0§<kotlin.Any?>}[0]
+    final fun <#A1: kotlin/Any?> callSafe(kotlin/Function1<#A1, kotlin/Unit> = ..., kotlin/Function1<kotlin/Throwable, kotlin/Unit> = ..., kotlin/Function0<#A1>): kotlin/Result<#A1> // com.mmk.kmpnotifier.notification/PushNotifier.callSafe|callSafe(kotlin.Function1<0:0,kotlin.Unit>;kotlin.Function1<kotlin.Throwable,kotlin.Unit>;kotlin.Function0<0:0>){0§<kotlin.Any?>}[0]
 }
 
 final class com.mmk.kmpnotifier.notification/NotifierBuilder { // com.mmk.kmpnotifier.notification/NotifierBuilder|null[0]

@@ -45,7 +45,7 @@ internal class PushNotifierImpl : PushNotifier() {
     ).isSuccess
 
     private fun <T> Task<T>.await(
-        onSuccess: () -> Unit = {},
+        onSuccess: (T) -> Unit = {},
         onFailure: (Throwable) -> Unit = currentLogger::log
     ) = callSafe(onSuccess = onSuccess, onFailure = onFailure) { Tasks.await<T>(this) }
 }
