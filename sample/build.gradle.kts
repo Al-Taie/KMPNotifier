@@ -17,12 +17,12 @@ kotlin {
 
     androidTarget {
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
+            jvmTarget = JvmTarget.JVM_21
         }
     }
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        moduleName = "sample"
+        outputModuleName = "sample"
         browser {
             commonWebpackConfig {
                 outputFileName = "sample.js"
@@ -101,8 +101,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     dependencies {
