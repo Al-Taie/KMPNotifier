@@ -36,6 +36,7 @@ apiValidation {
 }
 
 allprojects {
+    group = Config.ARTIFACT_GROUP_ID
     val excludedModules = listOf(":sample")
     if (project.path in excludedModules) return@allprojects
 
