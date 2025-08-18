@@ -50,8 +50,8 @@ dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 mavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 huawei-services = { id = "com.huawei.agconnect", version.ref = "huawei-services" }
-kmpnotifier = { id = "com.mmk.kmpnotifier" }
-kmpnotifier-library = { id = "com.mmk.kmpnotifier.library" }
+notifier = { id = "io.github.al-taie.notifier" }
+notifier-library = { id = "io.github.al-taie.notifier.library" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 
 [bundles]

@@ -1,14 +1,13 @@
 @file:Suppress("UnstableApiUsage")
 
-
-
 plugins {
     `kotlin-dsl`
+    id("com.gradle.plugin-publish") version "1.3.1"
 }
 
 repositories {
-    mavenCentral()
     google()
+    mavenCentral()
     gradlePluginPortal()
 }
 
@@ -18,23 +17,27 @@ dependencies {
     implementation(libs.gradle.android)
 }
 
-group = "com.mmk.kmpnotifier"
-gradlePlugin {
-    plugins {
-        val name = "flavor.AppFlavorPlugin"
-        register(name) {
-            id = "com.mmk.kmpnotifier"
-            implementationClass = name
-        }
-    }
-}
+group = "io.github.al-taie.notifier"
+version = "2.0.1"
 
 gradlePlugin {
+    website = "https://github.com/Al-Taie/KMPNotifier"
+    vcsUrl = "https://github.com/Al-Taie/KMPNotifier.git"
     plugins {
-        val name = "flavor.LibFlavorPlugin"
-        register(name) {
-            id = "com.mmk.kmpnotifier.library"
-            implementationClass = name
+        register("NotifierAppPlugin") {
+            id = "io.github.al-taie.notifier"
+            implementationClass = "flavor.AppFlavorPlugin"
+            displayName = "Notifier App Flavor Plugin"
+            description = "Flavor configuration for Notifier library consumers"
+            tags = listOf("android", "kotlin-multiplatform", "notifications", "firebase", "huawei")
+        }
+
+        register("NotifierLibPlugin") {
+            id = "io.github.al-taie.notifier.library"
+            implementationClass = "flavor.LibFlavorPlugin"
+            displayName = "Notifier Library Flavor Plugin"
+            description = "Flavor configuration for Notifier library development"
+            tags = listOf("android", "kotlin-multiplatform", "notifications", "firebase", "huawei")
         }
     }
 }

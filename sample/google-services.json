@@ -1,15 +1,15 @@
 {
   "project_info": {
     "project_number": "1012357420144",
-    "project_id": "kmpnotifier",
-    "storage_bucket": "kmpnotifier.appspot.com"
+    "project_id": "notifier",
+    "storage_bucket": "notifier.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:1012357420144:android:96d993a2a51ab2a87d50b5",
         "android_client_info": {
-          "package_name": "com.mmk.kmpnotifier.sample"
+          "package_name": "com.altaie.notifier.sample"
         }
       },
       "oauth_client": [],

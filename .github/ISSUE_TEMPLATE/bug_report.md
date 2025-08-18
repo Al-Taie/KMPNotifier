@@ -5,7 +5,7 @@ about: Create a bug report
 ---
 
 **KMPNotifier and Kotlin version:**
- [e.g]: kmpnotifier version: 1.1.0, kotlin version: 2.0.0
+ [e.g]: notifier version: 1.1.0, kotlin version: 2.0.0
 
 **Describe the bug**
 A clear and concise description of what the bug is.

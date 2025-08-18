@@ -1,7 +1,7 @@
 # KMPNotifier - Kotlin Multiplatform Push Notification
-[![Build](https://github.com/mirzemehdi/KMPNotifier/actions/workflows/build.yml/badge.svg)](https://github.com/mirzemehdi/KMPNotifier/actions/workflows/build.yml) 
+[![Build](https://github.com/Al-Taie/KMPNotifier/actions/workflows/build.yml/badge.svg)](https://github.com/Al-Taie/KMPNotifier/actions/workflows/build.yml) 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1.10-blue.svg?style=flat&logo=kotlin)](https://kotlinlang.org)
-[![Maven Central](https://img.shields.io/maven-central/v/io.github.mirzemehdi/kmpnotifier?color=blue)](https://search.maven.org/search?q=g:io.github.mirzemehdi)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.Al-Taie/notifier?color=blue)](https://search.maven.org/search?q=g:io.github.Al-Taie)
 
 ![badge-android](http://img.shields.io/badge/platform-android-6EDB8D.svg?style=flat)
 ![badge-ios](http://img.shields.io/badge/platform-ios-CDCDCD.svg?style=flat)
@@ -14,15 +14,15 @@
 
 
 Simple and easy to use Kotlin Multiplatform Push Notification library (using Firebase Cloud Messaging and Huawei Push Kit) targeting ios and android, and Local Notification targetting android, ios, desktop and web (js and wasm).  
-This library is used in [FindTravelNow](https://github.com/mirzemehdi/FindTravelNow-KMM/) production KMP project.
-You can check out [Documentation](https://mirzemehdi.github.io/KMPNotifier) for full library api information.  
+This library is used in [FindTravelNow](https://github.com/Al-Taie/FindTravelNow-KMM/) production KMP project.
+You can check out [Documentation](https://Al-Taie.github.io/KMPNotifier) for full library api information.  
 
-![kmpnotifier](https://github.com/user-attachments/assets/a0f38159-b31d-4a47-97a7-cc230e15d30b)
+![notifier](https://github.com/user-attachments/assets/a0f38159-b31d-4a47-97a7-cc230e15d30b)
 
 
 
 **_Related Blog Posts_**  
-[KMPNotifier Update: Web, Desktop, and New Features for Kotlin Multiplatform Notifications](https://proandroiddev.com/kmpnotifier-update-web-desktop-and-new-features-for-kotlin-multiplatform-notifications-529b489f5d9c)  
+[KMPNotifier Update: Web, Desktop, and New Features for Kotlin Multiplatform Notifications](https://proandroiddev.com/notifier-update-web-desktop-and-new-features-for-kotlin-multiplatform-notifications-529b489f5d9c)  
 [How to implement Push Notifications in Kotlin Multiplatform](https://proandroiddev.com/how-to-implement-push-notification-in-kotlin-multiplatform-5006ff20f76c)  
 
 
@@ -58,8 +58,8 @@ pluginManagement { // If in settings.gradle.kts
 }
 
 plugins {
-  // Apply KMPNotifier plugin (replace <latest_kmpnotifier_version> with the actual latest version)
-  id("com.mmk.kmpnotifier") version "<latest_kmpnotifier_version>" apply false 
+  // Apply KMPNotifier plugin (replace <latest_notifier_version> with the actual latest version)
+  id("altaieaie.notifier") version "<latest_notifier_version>" apply false 
   id("com.android.application") version "<agp_version>" apply false // Or your AGP version
   id("org.jetbrains.kotlin.multiplatform") version "<kotlin_version>" apply false // Or your Kotlin version
   // For Firebase
@@ -67,20 +67,20 @@ plugins {
 }
 ```
 
-Then in your shared module you add dependency in `commonMain`. Latest version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.mirzemehdi/kmpnotifier?color=blue)](https://search.maven.org/search?q=g:io.github.mirzemehdi). In iOS framework part export this library as well.
+Then in your shared module you add dependency in `commonMain`. Latest version: [![Maven Central](https://img.shields.io/maven-central/v/io.github.Al-Taie/notifier?color=blue)](https://search.maven.org/search?q=g:io.github.Al-Taie). In iOS framework part export this library as well.
 ```kotlin
 
 sourceSets {
   commonMain.dependencies {
     // Replace <latest_library_version> with the actual latest version from Maven Central
-    api("io.github.mirzemehdi:kmpnotifier:<latest_library_version>") 
+    api("io.github.Al-Taie:notifier:<latest_library_version>") 
   }
 }
 
 // For iOS, export the library in the framework block
 listOf(iosX64(),iosArm64(),iosSimulatorArm64()).forEach { iosTarget ->
   iosTarget.binaries.framework {
-    export("io.github.mirzemehdi:kmpnotifier:<latest_library_version>")
+    export("io.github.Al-Taie:notifier:<latest_library_version>")
     // ...
   }
 }
@@ -91,7 +91,7 @@ Apply the Android application plugin, the KMPNotifier plugin, and the respective
 ```kotlin
 plugins {
   id("com.android.application")
-  id("com.mmk.kmpnotifier") // Apply KMPNotifier plugin
+  id("altaieaie.notifier") // Apply KMPNotifier plugin
   
   // Apply only ONE of the following based on your needs:
   // For Firebase
@@ -117,7 +117,7 @@ android {
     // ...
 }
 ```
-**Note:** If you support both Firebase and Huawei, you will likely need to configure them per flavor. The `com.mmk.kmpnotifier` plugin aims to simplify this; check its documentation for advanced flavor-specific setups.
+**Note:** If you support both Firebase and Huawei, you will likely need to configure them per flavor. The `altaie.notifier` plugin aims to simplify this; check its documentation for advanced flavor-specific setups.
 
 ### Platform Setup
 In all platforms on Application Start you need to initialize library using 
@@ -131,7 +131,7 @@ NotifierManager.initialize(NotificationPlatformConfiguration)
 
   ### Android Setup
   Regardless of whether you use Firebase or Huawei, initialize `NotifierManager` in your `Application` class.
-  The `com.mmk.kmpnotifier` plugin, along with `com.google.gms.google-services` for firebase, will handle the necessary `AndroidManifest.xml` entries (like services and permissions).
+  The `altaie.notifier` plugin, along with `com.google.gms.google-services` for firebase, will handle the necessary `AndroidManifest.xml` entries (like services and permissions).
 
  ```kotlin
 class MyApplication : Application() {
@@ -168,7 +168,7 @@ permissionUtil.askNotificationPermission() // This will ask permission on Androi
   
   ### Huawei Setup Notes
   1.  **`agconnect-services.json`**: Ensure this file from Huawei AppGallery Connect is placed in your Android app module's root directory (e.g., `androidApp/agconnect-services.json`).
-  2.  **`manifestPlaceholders`**: As shown in the `androidApp/build.gradle.kts` setup, define `huawei_agconnect_appid` and `huawei_agconnect_cpid`. The `com.mmk.kmpnotifier` plugin uses these to configure the manifest correctly for Huawei services. You generally do not need to add Huawei services or permissions manually to the `AndroidManifest.xml` if the plugin is applied.
+  2.  **`manifestPlaceholders`**: As shown in the `androidApp/build.gradle.kts` setup, define `huawei_agconnect_appid` and `huawei_agconnect_cpid`. The `altaie.notifier` plugin uses these to configure the manifest correctly for Huawei services. You generally do not need to add Huawei services or permissions manually to the `AndroidManifest.xml` if the plugin is applied.
   3.  Initialize `NotifierManager` as shown in the "Android (Common Setup)" section.
 </details>
 
@@ -288,7 +288,7 @@ notifier.notify {
   title = "Title from KMPNotifier"
   body = "Body message from KMPNotifier"
   payloadData = mapOf(
-    Notifier.KEY_URL to "https://github.com/mirzemehdi/KMPNotifier/",
+    Notifier.KEY_URL to "https://github.com/Al-Taie/KMPNotifier/",
     "extraKey" to "randomValue"
   )
   image = NotificationImage.Url("https://github.com/user-attachments/assets/a0f38159-b31d-4a47-97a7-cc230e15d30b")
@@ -387,9 +387,9 @@ val pushNotifier = NotifierManager.getPushNotifier()
 // pushNotifier.subscribeToTopic("new_users") 
 // pushNotifier.unSubscribeFromTopic("new_users") 
 ```
-For setting custom notification sound, check [#61](https://github.com/mirzemehdi/KMPNotifier/pull/61#issuecomment-2275850021)  
-For setting Intent data in Android (for deeplink), check [#60](https://github.com/mirzemehdi/KMPNotifier/pull/60#issue-2454489089)    
-For permissionUtil, or manually asking notification permission check [#27](https://github.com/mirzemehdi/KMPNotifier/pull/27#issuecomment-2083639907)  
+For setting custom notification sound, check [#61](https://github.com/Al-Taie/KMPNotifier/pull/61#issuecomment-2275850021)  
+For setting Intent data in Android (for deeplink), check [#60](https://github.com/Al-Taie/KMPNotifier/pull/60#issue-2454489089)    
+For permissionUtil, or manually asking notification permission check [#27](https://github.com/Al-Taie/KMPNotifier/pull/27#issuecomment-2083639907)  
 
 ### Logging
 

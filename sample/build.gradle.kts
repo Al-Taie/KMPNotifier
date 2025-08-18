@@ -10,7 +10,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.kmpnotifier)
+    alias(libs.plugins.notifier)
 }
 
 kotlin {
@@ -20,22 +20,24 @@ kotlin {
             jvmTarget = JvmTarget.JVM_21
         }
     }
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        outputModuleName = "sample"
-        browser {
-            commonWebpackConfig {
-                outputFileName = "sample.js"
-                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-                    static = (static ?: mutableListOf()).apply {
-                        // Serve sources to debug inside browser
-                        add(project.projectDir.path)
-                    }
-                }
-            }
-        }
-        binaries.executable()
-    }
+
+//    @OptIn(ExperimentalWasmDsl::class)
+//    wasmJs {
+//        outputModuleName = "sample"
+//        browser {
+//            commonWebpackConfig {
+//                outputFileName = "sample.js"
+//                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+//                    static = (static ?: mutableListOf()).apply {
+//                        // Serve sources to debug inside browser
+//                        add(project.projectDir.path)
+//                    }
+//                }
+//            }
+//        }
+//        binaries.executable()
+//    }
+
     jvm("desktop")
     listOf(
         iosX64(),
@@ -43,7 +45,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            export(project(":kmpnotifier"))
+            export(project(":notifier"))
             baseName = "sample"
             isStatic = true
         }
@@ -61,7 +63,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.components.resources)
-            api(project(":kmpnotifier"))
+            api(project(":notifier"))
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -71,11 +73,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.mmk.kmpnotifier.sample"
+    namespace = "com.altaie.notifier.sample"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.mmk.kmpnotifier.sample"
+        applicationId = "com.altaie.notifier.sample"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
@@ -112,10 +114,10 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "com.mmk.kmpnotifier.sample.MainKt"
+        mainClass = "com.altaie.notifier.sample.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "KMPNotifier"
+            packageName = "Notifier"
             packageVersion = "1.0.0"
             appResourcesRootDir.set(project.layout.projectDirectory.dir("resources"))
         }
