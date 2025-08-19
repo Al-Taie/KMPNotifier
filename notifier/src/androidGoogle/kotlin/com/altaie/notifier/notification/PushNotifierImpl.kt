@@ -38,7 +38,7 @@ internal class PushNotifierImpl : PushNotifier() {
         onFailure = { currentLogger.log("Error while unsubscribing from topic $topic: $it") },
     ).isSuccess
 
-    private fun <T> Task<T>.await(
+    private suspend fun <T> Task<T>.await(
         onSuccess: (T) -> Unit = {},
         onFailure: (Throwable) -> Unit = currentLogger::log
     ) = callSafe(onSuccess = onSuccess, onFailure = onFailure) { Tasks.await<T>(this) }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
     <application>
         <service
             android:name=".service.HuaweiPushService"
@@ -10,12 +11,7 @@
             </intent-filter>
         </service>
         <meta-data
-            android:name="com.huawei.hms.client.appid"
-            android:value="appid=${huawei_agconnect_appid}">
-        </meta-data>
-        <meta-data
-            android:name="com.huawei.hms.client.cpid"
-            android:value="cpid=${huawei_agconnect_cpid}">
-        </meta-data>
+            android:name="push_kit_auto_init_enabled"
+            android:value="true" />
     </application>
 </manifest>

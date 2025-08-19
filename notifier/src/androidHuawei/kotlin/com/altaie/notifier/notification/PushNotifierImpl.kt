@@ -20,7 +20,9 @@ internal class PushNotifierImpl : PushNotifier() {
     }
 
     private val instanceId by lazy { HmsInstanceId.getInstance(applicationContext) }
-    private val messaging by lazy { HmsMessaging.getInstance(applicationContext) }
+    private val messaging by lazy {
+        HmsMessaging.getInstance(applicationContext).apply { isAutoInitEnabled = true }
+    }
     private val appId by lazy { AGCUtils.getAppId(applicationContext) ?: error("Huawei App ID is not provided") }
 
     override suspend fun getToken(): String? = callSafe(
