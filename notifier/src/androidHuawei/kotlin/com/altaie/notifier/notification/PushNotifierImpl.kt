@@ -1,13 +1,16 @@
 package com.altaie.notifier.notification
 
-import com.huawei.hmf.tasks.Task
-import com.huawei.hms.aaid.HmsInstanceId
-import com.huawei.hms.push.HmsMessaging
 import com.altaie.notifier.di.applicationContext
 import com.altaie.notifier.logger.currentLogger
 import com.altaie.notifier.logger.log
+import com.huawei.hmf.tasks.Task
 import com.huawei.hmf.tasks.Tasks
+import com.huawei.hms.aaid.HmsInstanceId
 import com.huawei.hms.common.util.AGCUtils
+import com.huawei.hms.push.HmsMessaging
+import kotlinx.coroutines.withTimeout
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 
 internal class PushNotifierImpl : PushNotifier() {
@@ -18,14 +21,12 @@ internal class PushNotifierImpl : PushNotifier() {
 
     private val instanceId by lazy { HmsInstanceId.getInstance(applicationContext) }
     private val messaging by lazy { HmsMessaging.getInstance(applicationContext) }
-    private val appId by lazy {
-        AGCUtils.getAppId(applicationContext) ?: throw IllegalStateException("Huawei App ID is not provided")
-    }
+    private val appId by lazy { AGCUtils.getAppId(applicationContext) ?: error("Huawei App ID is not provided") }
 
     override suspend fun getToken(): String? = callSafe(
         onSuccess = { currentLogger.log("Token retrieved successfully -> $it") },
         onFailure = { currentLogger.log("Error while getting token: $it") },
-        block = { instanceId.getToken(appId, HmsMessaging.DEFAULT_TOKEN_SCOPE) }
+        block = { getTokenImpl() }
     ).getOrNull()
 
     override suspend fun deleteMyToken() = callSafe(
@@ -44,8 +45,33 @@ internal class PushNotifierImpl : PushNotifier() {
         onFailure = { currentLogger.log("Error while unsubscribing from topic($topic): $it") }
     ).isSuccess
 
-    private fun <T> Task<T>.await(
+    private suspend fun <T> Task<T>.await(
         onSuccess: (T) -> Unit = {},
         onFailure: (Throwable) -> Unit = currentLogger::log
     ) = callSafe(onSuccess = onSuccess, onFailure = onFailure) { Tasks.await<T>(this) }
+
+    private suspend fun getTokenImpl(
+        timeout: Duration = 15.seconds,
+    ) = withTimeout(timeout = timeout) {
+        var isInstanceCreated = false
+        var currentToken: String? = token
+        var lastException: Throwable? = null
+        while (currentToken.isNullOrEmpty()) {
+            currentToken = if (isInstanceCreated)
+                token
+            else
+                runCatching { instanceId.getToken(appId, HmsMessaging.DEFAULT_TOKEN_SCOPE) }
+                    .onSuccess { isInstanceCreated = true }
+                    .onFailure { lastException = it }
+                    .getOrNull()
+                    ?.takeIf(String::isNotEmpty)
+        }
+
+        currentToken?.let { return@withTimeout currentToken }
+        lastException?.let { throw it } ?: error("No token found!")
+    }
+
+    companion object {
+        var token: String? = null
+    }
 }

@@ -8,21 +8,21 @@ object AppInitializer {
     fun onApplicationStart() {
         onApplicationStartPlatformSpecific()
         NotifierManager.setLogger { message ->
-            println("Notifier: $message")
+            println("DEBUGGING -> Notifier: $message")
         }
         NotifierManager.addListener(object : NotifierManager.Listener {
             override fun onNewToken(token: String) {
-                println("Push Notification onNewToken: $token")
+                println("DEBUGGING -> Push Notification onNewToken: $token")
             }
 
             override fun onPushNotification(title: String?, body: String?) {
                 super.onPushNotification(title, body)
-                println("Push Notification notification type message is received: Title: $title and Body: $body")
+                println("DEBUGGING -> Push Notification notification type message is received: Title: $title and Body: $body")
             }
 
             override fun onPayloadData(data: PayloadData) {
                 super.onPayloadData(data)
-                println("Push Notification payloadData: $data")
+                println("DEBUGGING -> Push Notification payloadData: $data")
             }
 
             override fun onPushNotificationWithPayloadData(
@@ -31,11 +31,11 @@ object AppInitializer {
                 data: PayloadData
             ) {
                 super.onPushNotificationWithPayloadData(title, body, data)
-                println("Push Notification is received: Title: $title and Body: $body and Notification payloadData: $data")
+                println("DEBUGGING -> Push Notification is received: Title: $title and Body: $body and Notification payloadData: $data")
             }
 
             override fun onNotificationClicked(data: PayloadData) {
-                println("Notification clicked, Notification payloadData: $data")
+                println("DEBUGGING -> Notification clicked, Notification payloadData: $data")
             }
         })
     }

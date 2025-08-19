@@ -5,6 +5,7 @@ import com.huawei.hms.push.RemoteMessage
 import com.altaie.notifier.logger.currentLogger
 import com.altaie.notifier.notification.NotificationHandler
 import com.altaie.notifier.notification.NotifierManagerImpl
+import com.altaie.notifier.notification.PushNotifierImpl
 
 
 internal class HuaweiPushService : HmsMessageService() {
@@ -16,6 +17,7 @@ internal class HuaweiPushService : HmsMessageService() {
         super.onNewToken(token)
         currentLogger.log("HuaweiPushService: onNewToken is called")
         token?.let { notifierManager.onNewToken(it) }
+        PushNotifierImpl.token = token
     }
 
     override fun onMessageReceived(message: RemoteMessage?) {

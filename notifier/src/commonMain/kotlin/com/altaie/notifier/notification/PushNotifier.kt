@@ -2,6 +2,10 @@ package com.altaie.notifier.notification
 
 import com.altaie.notifier.logger.currentLogger
 import com.altaie.notifier.logger.log
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
 public typealias PayloadData = Map<String, *>
 
@@ -32,12 +36,15 @@ public abstract class PushNotifier {
      */
     public abstract suspend fun unSubscribeFromTopic(topic: String): Boolean
 
-    protected fun <T> callSafe(
+    protected suspend fun <T> callSafe(
         onSuccess: (T) -> Unit = {},
         onFailure: (Throwable) -> Unit = currentLogger::log,
-        block: () -> T,
-    ): Result<T> = runCatching {
-        block()
-    }.onSuccess(onSuccess)
-        .onFailure(onFailure)
+        context: CoroutineContext = Dispatchers.IO,
+        block: suspend () -> T,
+    ): Result<T> = withContext(context) {
+        runCatching {
+            block()
+        }.onSuccess(onSuccess)
+            .onFailure(onFailure)
+    }
 }
