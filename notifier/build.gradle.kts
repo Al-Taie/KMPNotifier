@@ -2,7 +2,6 @@ import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import com.vanniktech.maven.publish.SonatypeHost
 import flavor.getKey
 import flavor.flavorApi
 import flavor.Flavor
@@ -98,8 +97,8 @@ android {
     }
 
     dependencies {
-        flavorApi(flavorName = Flavor.HUAWEI, dependency = libs.huawei.push)
-        flavorApi(flavorName = Flavor.GOOGLE, dependency = libs.firebase.messaging)
+        flavorApi(flavorName = Flavor.HUAWEI.flavorName, dependency = libs.huawei.push)
+        flavorApi(flavorName = Flavor.GOOGLE.flavorName, dependency = libs.firebase.messaging)
     }
 }
 

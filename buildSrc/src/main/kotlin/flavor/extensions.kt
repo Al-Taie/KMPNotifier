@@ -6,9 +6,12 @@ import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.dsl.ProductFlavor
-import flavor.Flavor.DIMENSION
-import flavor.Flavor.flavors
+import flavor.Flavor.Companion.DIMENSION
+import flavor.Flavor.Companion.flavors
 import org.gradle.api.Project
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.kotlin.dsl.DependencyHandlerScope
 import org.gradle.kotlin.dsl.configure
 import java.io.File
@@ -23,11 +26,12 @@ fun CommonExtension<*, *, *, *, *, *>.configureFlavor(block: ProductFlavor.() ->
     }
 
 internal fun CommonExtension<*, *, *, *, *, *>.applyFlavorConfig() {
-    flavorDimensions.add(DIMENSION)
-
+    if (!flavorDimensions.contains(Flavor.DIMENSION)) {
+        flavorDimensions += Flavor.DIMENSION
+    }
     productFlavors {
         flavors.forEach { flavorName ->
-            create(flavorName) { dimension = DIMENSION }
+            maybeCreate(flavorName).apply { dimension = DIMENSION }
         }
     }
 }
@@ -83,3 +87,21 @@ fun getLocalProperty(key: String, file: String? = null, root: String = "."): Str
 
 fun Project.getKey(key: String) = getLocalProperty(key, root = rootDir.path)
 fun Project.getManifestPlaceholdersKey(key: String) = getKey(key).replace("\"", "")
+
+fun Provider<String>.getBooleanOrDefault(default: Boolean) = map { it.toBoolean() }.orElse(default)
+
+fun ObjectFactory.createBoolean(
+    providers: ProviderFactory,
+    propertyName: String,
+    defaultValue: Boolean,
+) = property(Boolean::class.java).convention(
+    providers.gradleProperty(propertyName).getBooleanOrDefault(default = defaultValue)
+)
+
+fun ObjectFactory.createString(
+    providers: ProviderFactory,
+    propertyName: String,
+    defaultValue: String,
+) = property(String::class.java).convention(
+    providers.gradleProperty(propertyName).orElse(defaultValue)
+)

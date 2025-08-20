@@ -2,7 +2,7 @@
 
 plugins {
     `kotlin-dsl`
-    id("com.gradle.plugin-publish") version "1.3.1"
+    alias(libs.plugins.gradle.publish)
 }
 
 repositories {
@@ -14,18 +14,19 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(gradleKotlinDsl())
-    implementation(libs.gradle.android)
+    implementation(libs.gradle.android.api)
 }
 
-group = "io.github.al-taie.notifier"
-version = "2.0.1"
+val notifier = libs.plugins.notifier.asProvider().get()
+group = notifier.pluginId
+version = notifier.version.toString()
 
 gradlePlugin {
     website = "https://github.com/Al-Taie/KMPNotifier"
     vcsUrl = "https://github.com/Al-Taie/KMPNotifier.git"
     plugins {
         register("NotifierAppPlugin") {
-            id = "io.github.al-taie.notifier"
+            id = notifier.pluginId
             implementationClass = "flavor.AppFlavorPlugin"
             displayName = "Notifier App Flavor Plugin"
             description = "Flavor configuration for Notifier library consumers"
@@ -33,7 +34,7 @@ gradlePlugin {
         }
 
         register("NotifierLibPlugin") {
-            id = "io.github.al-taie.notifier.library"
+            id = "${notifier.pluginId}.library"
             implementationClass = "flavor.LibFlavorPlugin"
             displayName = "Notifier Library Flavor Plugin"
             description = "Flavor configuration for Notifier library development"

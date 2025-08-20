@@ -7,7 +7,7 @@ buildscript {
         maven(url = "https://developer.huawei.com/repo/")
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.11.0")
+        classpath(libs.gradle.android)
         classpath(libs.huawei.services)
     }
 }
