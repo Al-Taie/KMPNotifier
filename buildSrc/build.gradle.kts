@@ -19,7 +19,7 @@ dependencies {
 
 val notifier = libs.plugins.notifier.asProvider().get()
 group = notifier.pluginId
-version = notifier.version.toString()
+version = libs.versions.notifier.get()
 
 gradlePlugin {
     website = "https://github.com/Al-Taie/KMPNotifier"

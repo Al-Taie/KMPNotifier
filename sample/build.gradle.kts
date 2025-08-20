@@ -9,7 +9,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.google.services)
     alias(libs.plugins.notifier)
 }
 
@@ -77,17 +76,19 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.altaie.notifier.sample"
+        applicationId = "com.fastlink.wsc.dev"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
-        manifestPlaceholders.putAll(
-            mapOf(
-                "huawei_agconnect_appid" to "",
-                "huawei_agconnect_cpid" to "",
-            )
-        )
+    }
+    signingConfigs {
+        create("release") {
+            keyAlias = "test"
+            keyPassword = "testtest"
+            storeFile = file("../testKeyStore.jks")
+            storePassword = "testtest"
+        }
     }
     buildFeatures {
         compose = true
@@ -100,7 +101,10 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
         }
+
+        debug { signingConfig = signingConfigs.getByName("release") }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_21

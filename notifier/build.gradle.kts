@@ -112,7 +112,7 @@ mavenPublishing {
     coordinates(
         groupId = Config.ARTIFACT_GROUP_ID,
         artifactId = Config.ARTIFACT_ID,
-        version = Config.ARTIFACT_VERSION
+        version = libs.versions.notifier.get()
     )
     pom {
         configure(
